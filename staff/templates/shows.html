@@ -1,0 +1,73 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% load utils %}
+
+{% block title %}
+  <title>Exibições - Admin</title>
+{% endblock %}
+
+{% block content %}
+  <h1 class="mt-4">Exibições</h1>
+  <ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">
+      <a href="/admin">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Exibições</li>
+    <li class="breadcrumb-item">
+      <a href="/admin/createshow">Adicionar Exibição</a>
+    </li>
+  </ol>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      Lista de Exibições
+
+      <a class="btn btn-outline-primary" href="/admin/createshow" align="right">Adicionar Exibições</a>
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple">
+        <thead>
+          <tr>
+            <th>Filme</th>
+            <th>Horário</th>
+            <th>Data de Início</th>
+            <th>Data de Fim</th>
+            <th>Preço</th>
+            <th>Pôster</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Filme</th>
+            <th>Horário</th>
+            <th>Data de Início</th>
+            <th>Data de Fim</th>
+            <th>Preço</th>
+            <th>Pôster</th>
+            <th>Ações</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for show in shows %}
+            <tr>
+              <td>{{ show.movie }}</td>
+              <td>{{ show.showtime }}</td>
+              <td>{{ show.start_date }}</td>
+              <td>{{ show.end_date }}</td>
+              <td>{{ show.price }}</td>
+              <td>
+                <img src="{{ show.movie.url }}" style="height:50px;width:40px;" />
+              </td>
+              <td>
+                <a class="btn btn-danger" href="/admin/updateshow/{{ show.id }}">Editar</a>
+                <a class="btn btn-danger" href="/admin/deleteshow/{{ show.id }}">Deletar</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% load utils %}
+
+{% block title %}
+  <title>Filmes - Admin</title>
+{% endblock %}
+
+{% block content %}
+  <h1 class="mt-4">Filmes</h1>
+  <ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">
+      <a href="/admin">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Filmes</li>
+    <li class="breadcrumb-item">
+      <a href="/admin/createfilm">Adicionar Filme</a>
+    </li>
+  </ol>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      Lista de Filmes
+
+      <a class="btn btn-outline-primary" href="/admin/createfilm" align="right">Adicionar Filme</a>
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple">
+        <thead>
+          <tr>
+            <th>Filme</th>
+            <th>Gênero</th>
+            <th>Idioma</th>
+            <th>Ano</th>
+            <th>Pôster</th>
+            <th>Adicionado em</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Filme</th>
+            <th>Gênero</th>
+            <th>Idioma</th>
+            <th>Ano</th>
+            <th>Pôster</th>
+            <th>Adicionado em</th>
+            <th>Ações</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for film in film_list %}
+            <tr>
+              <td>{{ film.movie_name }}</td>
+              <td>{{ film.movie_genre }}</td>
+              <td>{{ film.movie_lang }}</td>
+              <td>{{ film.movie_year }}</td>
+              <td style="padding:5px">
+                <img src="{{ film.url }}" style="height:50px;width:40px;" />
+              </td>
+              <td>{{ film.date_added }}</td>
+              <td>
+                <a class="btn btn-danger" href="/detail/{{ film.id }}" target="_blank">Preview</a>
+                <a class="btn btn-danger" href="/admin/updatefilm/{{ film.id }}">Editar</a>
+                <a class="btn btn-danger" data-id="{{ film.id }}" href="/admin/deletefilm/{{ film.id }}">Deletar</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

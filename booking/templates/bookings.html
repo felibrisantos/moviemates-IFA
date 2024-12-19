@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load utils %}
+
+<!-- Header -->
+{% block title %}
+  <title>Minhas Reservas</title>
+  <style>
+    .results {
+      font-family: 'Lato', sans-serif;
+    }
+    .norounds {
+      border-radius: 0px;
+    }
+    table {
+      text-align: center;
+    }
+    .tab {
+      background-color: black !important;
+      border: None !important;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% comment %} <p>Raw Dataset: {{ data }}</p> {% endcomment %}
+  <div class="container" id="movie-content">
+    {% comment %}Raw Queryset {{ showtimes }} {% endcomment %}
+    {% if msg %}
+      <div class="alert alert-success alert-dismissible fade show" id="messageblk" role="alert">
+        {{ msg }}
+        <button type="button" class="btn-close messagealert" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+    <div class="row">
+      <h2 class="text-danger">Minhas Reservas</h2>
+    </div>
+    {% if data %}
+      <table class="table table-dark table-hover" class="tab">
+        <thead>
+          <tr>
+            <th scope="col" class="tab"></th>
+            <th scope="col" class="tab">Data</th>
+            <th scope="col" class="tab">Filme</th>
+            <th scope="col" class="tab">Horário</th>
+            <th scope="col" class="tab">Assentos</th>
+            <th scope="col" class="tab">Total (R$)</th>
+            <th scope="col" class="tab">Comprado</th>
+            <th scope="col" class="tab">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data %}
+            <tr>
+              <td style="padding:5px" class="tab">
+                <img src="{{ row.show__movie__url }}" style="height:50px;width:40px;" />
+              </td>
+              <td class="tab">{{ row.show_date }}</td>
+              <td class="tab">{{ row.show__movie__movie_name }}</td>
+              <td class="tab">{{ row.show__showtime }}</td>
+              <td class="tab">{{ row.seat_num }}</td>
+              <td class="tab">${{ row.total }}</td>
+              <td class="tab">{{ row.booked_date|tdiff }}</td>
+              <td class="tab">
+                <a type="button" class="btn bstatusbtn" data-id="{{ row.id }}">{{ row.show_date|bstatus }}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-secondary">Nenhum Ingresso foi Comprado Ainda</p>
+    {% endif %}
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content bg-dark">
+        <div class="modal-header" style="border-bottom: None;">
+          <h5 class="modal-title" id="exampleModalLongTitle">Tem certeza que quer cancelar?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">Confirme que quer cancelar clicando em Confirmar.</div>
+        <div class="modal-footer" style="border-top:None">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <a hre="#" class="btn btn-danger" id="finalConfirm">Confirmar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script>
+    $(document).ready(function () {
+      $('.bstatusbtn').each(function () {
+        val = $(this).text()
+        if (val.includes('Cancel')) {
+          console.log('cancel')
+          $(this).addClass('btn')
+          $(this).addClass('btn-danger')
+        } else if (val.includes('watched')) {
+          console.log('watched')
+          $(this).removeClass('bstatusbtn')
+        }
+      })
+    
+      $('.bstatusbtn').click(function () {
+        val = $(this).text()
+        if (val.includes('Cancel')) {
+          console.log('cancel')
+          bid = $(this).attr('data-id')
+          console.log(bid)
+          $('#finalConfirm').attr('href', '/cancelbooking/' + bid)
+        } else if (val.includes('watched')) {
+          console.log('watched')
+        }
+    
+        $('#exampleModalCenter').modal('show')
+      })
+    
+      $('.messagealert').click(function () {
+        $('#messageblk').hide()
+      })
+    })
+  </script>
+{% endblock %}

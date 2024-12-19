@@ -1,0 +1,65 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% load utils %}
+
+{% block title %}
+  <title>Planos de Fundo - Admin</title>
+{% endblock %}
+
+{% block content %}
+  <h1 class="mt-4">Planos de Fundo</h1>
+  <ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">
+      <a href="/admin">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Planos de Fundo</li>
+    <li class="breadcrumb-item">
+      <a href="/admin/addbanner">Adicionar Planos de Fundo</a>
+    </li>
+  </ol>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      Lista de Planos de Fundo
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple">
+        <thead>
+          <tr>
+            <th>Filme</th>
+            <th>Plano de Fundo</th>
+            <th>Atualizado</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Filme</th>
+            <th>Plano de Fundo</th>
+            <th>Atualizado</th>
+            <th>Ações</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for banner in banners %}
+            <tr>
+              <td>{{ banner.movie__movie_name }}</td>
+              <td style="padding:5px">
+                <img src="{{ banner.url }}" style="height:50px;width:150px;" />
+              </td>
+              <td>{{ banner.modified|tdiff }}</td>
+              <td>
+                <a class="btn btn-danger" href="/" target="_blank">Preview</a>
+                <a class="btn btn-danger" href="/admin/editbanner/{{ banner.id }}">Editar</a>
+                {% comment %} <a href="#">delete</a> {% endcomment %}
+                <!-- Button trigger modal -->
+                <a class="btn btn-danger" data-id="{{ banner.id }}" href="/admin/deletebanner/{{ banner.id }}">Deletar</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
