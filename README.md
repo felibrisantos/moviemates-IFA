@@ -5,7 +5,7 @@ MovieMates é uma aplicação web para reserva de ingressos de cinema. Os usuár
 
 # Acesso ao Site
 
-##moviemates1.vercel.app
+## moviemates1.vercel.app
 
 ## Instalação
 
