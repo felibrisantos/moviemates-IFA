@@ -59,7 +59,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('index')  # Redireciona para 'index' ao invés de 'consulta'
+            return redirect('index')
         else:
             return render(request, 'login.html', {'error': 'Invalid credentials'})
     return render(request, 'login.html')
